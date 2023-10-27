@@ -1,0 +1,33 @@
+Package: gggenes
+Title: Draw Gene Arrow Maps in 'ggplot2'
+Version: 0.5.1.9002
+Authors@R: c(person("David", "Wilkins", email = "david@wilkox.org",
+                  role = c("aut", "cre")),
+             person("Zachary", "Kurtz", email = "zdkurtz@gmail.com",
+                  role = c("ctb")))
+Description: A 'ggplot2' extension for drawing gene arrow maps.
+Depends:
+    R (>= 3.6)
+Imports:
+    grid (>= 3.3.0),
+    ggplot2 (>= 2.2.1),
+    ggfittext (>= 0.8.0),
+    rlang (>= 0.2.0),
+    lifecycle,
+    cli (>= 3.6.1)
+License: GPL-2
+LazyData: true
+RoxygenNote: 7.2.3
+URL: https://wilkox.org/gggenes/
+BugReports: https://github.com/wilkox/gggenes/issues/
+Suggests: 
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown,
+    vdiffr,
+    spelling
+VignetteBuilder: knitr
+Roxygen: list(markdown = TRUE)
+Encoding: UTF-8
+Language: en-US
+Config/testthat/edition: 3

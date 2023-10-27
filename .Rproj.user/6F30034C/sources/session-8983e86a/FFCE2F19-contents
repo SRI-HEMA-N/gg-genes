@@ -1,0 +1,126 @@
+#gggenes
+#gggenes is a ggplot2 extension for drawing gene arrow maps.
+
+#Installing gggenes
+#Install the stable version of gggenes from CRAN:
+
+install.packages("gggenes")
+
+#Drawing gene arrows with geom_gene_arrow()
+#if you are drawing for more than one genes.numerical location is not similar
+# Beautifying the plot with theme_genes
+#theme_genes() is provided with some sensible defaults.
+
+library(ggplot2)
+library(gggenes)
+
+ggplot(example_genes, aes(xmin = start, xmax = end, y = molecule, fill = gene)) +
+  geom_gene_arrow() +
+  facet_wrap(~ molecule, scales = "free", ncol = 1) +
+  scale_fill_brewer(palette = "Set3") +
+  theme_genes()
+
+#Aligning genes with make_alignment_dummies()
+#make_alignment_dummies() generates a set of dummy genes that if added to the plot with geom_blank()
+#will extend the range of each facet to visually align the selected gene across facets.
+dummies <- make_alignment_dummies(
+  example_genes,
+  aes(xmin = start, xmax = end, y = molecule, id = gene),
+  on = "genE"
+)
+
+ggplot(example_genes, aes(xmin = start, xmax = end, y = molecule, fill = gene)) +
+  geom_gene_arrow() +
+  geom_blank(data = dummies) +
+  facet_wrap(~ molecule, scales = "free", ncol = 1) +
+  scale_fill_brewer(palette = "Set3") +
+  theme_genes()
+
+#Labelling genes with geom_gene_label()
+#To label individual genes, we use geom_gene_label()
+# geom_gene_label() uses the ggfittext package to fit the label text inside the gene arrows; 
+
+ggplot(
+  example_genes,
+  aes(xmin = start, xmax = end, y = molecule, fill = gene, label = gene)
+) +
+  geom_gene_arrow(arrowhead_height = unit(3, "mm"), arrowhead_width = unit(1, "mm")) +
+  geom_gene_label(align = "left") +
+  geom_blank(data = dummies) +
+  facet_wrap(~ molecule, scales = "free", ncol = 1) +
+  scale_fill_brewer(palette = "Set3") +
+  theme_genes()
+
+#Reversing gene direction with the optional forward aesthetic
+#genes arrows are drawn pointing in the direction implied by xmin and xmax.
+# You can override this with the optional forward aesthetic,
+# which can be useful when the gene coordinates and orientation 
+#are encoded as separate variables.
+
+example_genes$direction <- ifelse(example_genes$strand == "forward", 1, -1)
+ggplot(
+  subset(example_genes, molecule == "Genome1"),
+  aes(xmin = start, xmax = end, y = strand, fill = gene, forward = direction)
+) +
+  geom_gene_arrow() +
+  theme_genes()
+
+# Viewing subgene segments
+#geom_subgene_arrow()
+#geom_gene_arrow() will produce arrowheads, 
+#as long as xmin >= xsubmin and xmax >= xsubmax for all subgenes
+
+ggplot(example_genes, aes(xmin = start, xmax = end, y = molecule)) +
+  facet_wrap(~ molecule, scales = "free", ncol = 1) +
+  geom_gene_arrow(fill = "white") +
+  geom_subgene_arrow(data = example_subgenes,
+                     aes(xmin = start, xmax = end, y = molecule, fill = gene,
+                         xsubmin = from, xsubmax = to), color="black", alpha=.7) +
+  theme_genes()
+
+# label subgenes
+#To label subgenes, we can use geom_subgene_label(), which works similarly 
+#to geom_gene_label() with the major difference 
+#that it requires xsubmin and xsubmax
+
+ggplot(subset(example_genes, molecule == "Genome4" & gene == "genA"),
+       aes(xmin = start, xmax = end, y = strand)
+) +
+  geom_gene_arrow() +
+  geom_gene_label(aes(label = gene)) +
+  geom_subgene_arrow(
+    data = subset(example_subgenes, molecule == "Genome4" & gene == "genA"),
+    aes(xsubmin = from, xsubmax = to, fill = subgene)
+  ) +
+  geom_subgene_label(
+    data = subset(example_subgenes, molecule == "Genome4" & gene == "genA"),
+    aes(xsubmin = from, xsubmax = to, label = subgene),
+    min.size = 0
+  )
+
+# drawing genetic features
+#Both of these geoms take an optional forward aesthetic to indicated whether a feature is oriented 
+#and,in what direction 
+#(TRUE meaning oriented towards the right of the x-axis 
+#and FALSE meaning towards the left).
+
+geom_feature <- function(
+    mapping = NULL,
+    data = NULL,
+    stat = "identity",
+    position = "identity",
+    na.rm = FALSE,
+    inherit.aes = FALSE,
+    feature_height = unit(3, "mm"),
+    feature_width = unit(3, "mm"),
+    arrowhead_width = unit(2, "mm"),
+    ...
+)
+
+ggplot(example_genes, aes(xmin = start, xmax = end, y = molecule, fill = gene, 
+                          forward = orientation)) +
+  geom_gene_arrow() +
+  facet_wrap(~ molecule, scales = "free", ncol = 1) +
+  scale_fill_brewer(palette = "Set3") +
+  theme_genes()
+
