@@ -265,13 +265,6 @@ ggplot(example_genes_polar, aes(xmin = start, xmax = end, y = molecule, fill = g
 
 ![](man/figures/README-unnamed-chunk-4-1.png)<!-- -->
 
-## Other genetic features
-
-Do you have an idea, suggestion or request for another type of feature
-for gggenes to draw? [Open a new
-issue](https://github.com/wilkox/gggenes/issues/new) and it will be
-considered.
-
 ## Related packages
 
 - [gggenomes](https://thackl.github.io/gggenomes/) for visualising
