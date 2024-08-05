@@ -12,7 +12,8 @@ stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://
 gggenes is a [ggplot2](https://ggplot2.tidyverse.org) extension for
 drawing gene arrow maps.
 
-##[FIGURES](https://github.com/SRI-HEMA-N/gg-genes/tree/main/figures)
+--> [FIGURES](https://github.com/SRI-HEMA-N/gg-genes/tree/main/figures)
+
 ## Installing gggenes
 
 Install the stable version of gggenes from CRAN:
